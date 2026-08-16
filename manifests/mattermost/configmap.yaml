@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mattermost-configmap
+  name: mattermost-config
   namespace: mattermost-k3d
 data:
   MM_SQLSETTINGS_DRIVERNAME: postgres

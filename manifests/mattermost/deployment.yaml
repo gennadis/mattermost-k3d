@@ -20,7 +20,7 @@ spec:
             - secretRef:
                 name: mattermost-credentials
             - configMapRef:
-                name: mattermost-configmap
+                name: mattermost-config
           volumeMounts:
             - name: mattermost-data
               mountPath: /mattermost/data
