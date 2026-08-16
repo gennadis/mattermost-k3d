@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mattermost
+  namespace: mattermost-k3d
+data:
+  MM_SQLSETTINGS_DRIVERNAME: postgres
+  MM_CACHESETTINGS_CACHETYPE: redis
+  MM_CACHESETTINGS_REDISADDRESS: redis:6379
+  MM_CACHESETTINGS_REDISDB: "0"
+  MM_SERVICESETTINGS_SITEURL: http://localhost:8065
