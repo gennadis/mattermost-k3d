@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: mattermost
-          image: mattermost/mattermost-team-edition:9
+          image: ghcr.io/jannegpriv/mattermost-arm64:11.1.0
           envFrom:
             - secretRef:
                 name: mattermost-credentials
