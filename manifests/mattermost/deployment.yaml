@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mattermost
+  namespace: mattermost-k3d
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mattermost
+  template:
+    metadata:
+      labels:
+        app: mattermost
+    spec:
+      containers:
+        - name: mattermost
+          image: mattermost/mattermost-team-edition:9
+          envFrom:
+            - secretRef:
+                name: mattermost-credentials
+            - configMapRef:
+                name: mattermost-configmap
+          volumeMounts:
+            - name: mattermost-data
+              mountPath: /mattermost/data
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+          ports:
+            - containerPort: 8065
+          readinessProbe:
+            httpGet:
+              path: /api/v4/system/ping
+              port: 8065
+            initialDelaySeconds: 30
+      volumes:
+        - name: mattermost-data
+          persistentVolumeClaim:
+            claimName: mattermost-data
