@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: redis
-          image: redis:8
+          image: redis:8.10.0
           command: ["sh", "-c"]
           args: ['redis-server --requirepass "$REDIS_PASSWORD"']
           envFrom:
