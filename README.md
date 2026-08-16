@@ -7,9 +7,9 @@ Mattermost deployed on Kubernetes (k3d) from raw manifests
 - **Mattermost** - Go backend + web app ([`mattermost/mattermost`](https://github.com/mattermost/mattermost))
 
 ## Cluster
-Local [k3d](https://k3d.io) cluster:
+Local [k3d](https://k3d.io) cluster, with port 80 published so Ingress traffic reaches it:
 ```
-k3d cluster create learn --servers 1 --agents 1
+k3d cluster create learn --servers 1 --agents 1 -p "80:80@loadbalancer"
 ```
 
 ## Deploy
@@ -21,13 +21,16 @@ kubectl apply -f manifests/mattermost/
 ```
 
 ## Access
+Via `Traefik` ingress, routed through [nip.io](https://nip.io) so no `/etc/hosts` edits are needed:
+http://mattermost.127.0.0.1.nip.io
+
+Or without relying on the Ingress:
 ```
 kubectl -n mattermost-k3d port-forward svc/mattermost 8065:8065
 ```
 Then open http://localhost:8065
 
 ## TODO
-- [ ] Ingress (Traefik) instead of `port-forward`
 - [ ] MinIO for file storage
 - [ ] Small custom Kubernetes operator
 - [ ] Docs polishing
