@@ -33,3 +33,8 @@ spec:
           readinessProbe:
             exec:
               command: ["sh", "-c", "redis-cli -a $REDIS_PASSWORD ping"]
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "redis-cli -a $REDIS_PASSWORD ping"]
+            initialDelaySeconds: 10
+            periodSeconds: 20
