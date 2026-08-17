@@ -16,6 +16,11 @@ spec:
       containers:
         - name: mattermost
           image: ghcr.io/jannegpriv/mattermost-arm64:11.1.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           envFrom:
             - secretRef:
                 name: mattermost-credentials

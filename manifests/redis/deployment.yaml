@@ -18,6 +18,11 @@ spec:
           image: redis:8.10.0
           command: ["sh", "-c"]
           args: ['redis-server --requirepass "$REDIS_PASSWORD"']
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           envFrom:
             - secretRef:
                 name: redis-credentials
