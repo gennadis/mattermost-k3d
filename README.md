@@ -4,6 +4,7 @@ Mattermost deployed on Kubernetes (k3d) from raw manifests
 ## Stack
 - **Postgres** - primary datastore
 - **Redis** - deployed and wired, but inactive (see note below)
+- **MinIO** - S3-compatible object storage for Mattermost file uploads
 - **Mattermost** - Go backend + web app ([`mattermost/mattermost`](https://github.com/mattermost/mattermost))
 
 ## Cluster
@@ -17,6 +18,7 @@ k3d cluster create learn --servers 1 --agents 1 -p "80:80@loadbalancer"
 kubectl apply -f manifests/namespace.yaml
 kubectl apply -f manifests/postgres/
 kubectl apply -f manifests/redis/
+kubectl apply -f manifests/minio/
 kubectl apply -f manifests/mattermost/
 ```
 
@@ -31,7 +33,6 @@ kubectl -n mattermost-k3d port-forward svc/mattermost 8065:8065
 Then open http://localhost:8065
 
 ## TODO
-- [ ] MinIO for file storage
 - [ ] Small custom Kubernetes operator
 - [ ] Docs polishing
 
