@@ -40,16 +40,20 @@ spec:
               memory: "512Mi"
           ports:
             - containerPort: 8065
+          startupProbe:
+            httpGet:
+              path: /api/v4/system/ping
+              port: 8065
+            periodSeconds: 5
+            failureThreshold: 30
           readinessProbe:
             httpGet:
               path: /api/v4/system/ping
               port: 8065
-            initialDelaySeconds: 30
           livenessProbe:
             httpGet:
               path: /api/v4/system/ping
               port: 8065
-            initialDelaySeconds: 60
             periodSeconds: 30
       volumes:
         - name: mattermost-data
