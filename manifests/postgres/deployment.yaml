@@ -24,11 +24,11 @@ spec:
               mountPath: /var/lib/postgresql/data
           resources:
             limits:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "200m"
+              memory: "256Mi"
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "200m"
+              memory: "256Mi"
           ports:
             - containerPort: 5432
           readinessProbe:
