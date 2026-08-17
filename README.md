@@ -2,10 +2,10 @@
 Mattermost deployed on Kubernetes (k3d) from raw manifests
 
 ## Stack
+- **Mattermost** - Go backend + web app ([`mattermost/mattermost`](https://github.com/mattermost/mattermost))
 - **Postgres** - primary datastore
 - **Redis** - deployed and wired, but inactive (see note below)
 - **MinIO** - S3-compatible object storage for Mattermost file uploads
-- **Mattermost** - Go backend + web app ([`mattermost/mattermost`](https://github.com/mattermost/mattermost))
 
 ## Cluster
 Local [k3d](https://k3d.io) cluster, with port 80 published so Ingress traffic reaches it:
