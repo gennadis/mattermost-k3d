@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-create-bucket
+  namespace: mattermost-k3d
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      containers:
+        - name: minio-create-bucket-job
+          image: minio/mc
+          command: ["sh", "-c"]
+          args:
+            - >-
+              mc alias set local http://minio:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD &&
+              mc mb --ignore-existing local/mattermost-files
+          envFrom:
+            - secretRef:
+                name: minio-credentials
+      restartPolicy: Never
