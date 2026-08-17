@@ -21,6 +21,7 @@ kubectl apply -f manifests/redis/
 kubectl apply -f manifests/minio/
 kubectl apply -f manifests/mattermost/
 kubectl apply -f manifests/network-policies/
+kubectl apply -f manifests/backup/
 ```
 
 ## Access
@@ -46,5 +47,8 @@ Then open http://localhost:8065
   `manifests/mattermost/configmap.yaml`
 - **Network policies:** `manifests/network-policies/` locks down the namespace to
   default-deny ingress, then explicitly allows only: Mattermost -> Postgres/Redis/MinIO,
-  the bucket-creation Job -> MinIO, and the Traefik ingress controller (`kube-system`) ->
-  Mattermost.
+  the bucket-creation Job -> MinIO, the backup CronJob -> Postgres/MinIO, and the Traefik
+  ingress controller (`kube-system`) -> Mattermost
+- **Backups:** `manifests/backup/cronjob.yaml` dumps Postgres nightly at 03:00 and uploads
+  it to a `postgres-backups` bucket in MinIO. Trigger a manual run with
+  `kubectl -n mattermost-k3d create job --from=cronjob/postgres-backup <name>`
