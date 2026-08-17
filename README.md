@@ -52,3 +52,6 @@ Then open http://localhost:8065
 - **Backups:** `manifests/backup/cronjob.yaml` dumps Postgres nightly at 03:00 and uploads
   it to a `postgres-backups` bucket in MinIO. Trigger a manual run with
   `kubectl -n mattermost-k3d create job --from=cronjob/postgres-backup <name>`
+- **Security:** Redis/MinIO/Mattermost containers run with `allowPrivilegeEscalation: false`
+  and all Linux capabilities dropped. Postgres doesn't - its official image
+  entrypoint needs root-level file capabilities
