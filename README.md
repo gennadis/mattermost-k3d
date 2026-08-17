@@ -20,6 +20,7 @@ kubectl apply -f manifests/postgres/
 kubectl apply -f manifests/redis/
 kubectl apply -f manifests/minio/
 kubectl apply -f manifests/mattermost/
+kubectl apply -f manifests/network-policies/
 ```
 
 ## Access
@@ -43,3 +44,7 @@ Then open http://localhost:8065
   without one the server refuses to boot. Redis stays deployed to demonstrate the
   integration, but `MM_CACHESETTINGS_CACHETYPE` is left disabled in
   `manifests/mattermost/configmap.yaml`
+- **Network policies:** `manifests/network-policies/` locks down the namespace to
+  default-deny ingress, then explicitly allows only: Mattermost -> Postgres/Redis/MinIO,
+  the bucket-creation Job -> MinIO, and the Traefik ingress controller (`kube-system`) ->
+  Mattermost.
