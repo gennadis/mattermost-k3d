@@ -5,6 +5,8 @@ metadata:
   namespace: mattermost-k3d
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: redis
