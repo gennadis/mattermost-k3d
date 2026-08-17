@@ -55,3 +55,6 @@ Then open http://localhost:8065
 - **Security:** Redis/MinIO/Mattermost containers run with `allowPrivilegeEscalation: false`
   and all Linux capabilities dropped. Postgres doesn't - its official image
   entrypoint needs root-level file capabilities
+- **Deploy strategy:** all Deployments use `Recreate`, not the default `RollingUpdate` -
+  every workload here is backed by a `ReadWriteOnce` PVC, which only one pod can mount
+  at a time, so surging a second pod before killing the first doesn't work
