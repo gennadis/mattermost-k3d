@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+  namespace: mattermost-k3d
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: postgres-backup
+        spec:
+          restartPolicy: Never
+          initContainers:
+            - name: pg-dump
+              image: postgres:16.15
+              envFrom:
+                - secretRef:
+                    name: postgres-credentials
+              command: ["sh", "-c"]
+              args:
+                - >-
+                  until pg_isready -h postgres -U $POSTGRES_USER; do sleep 1; done &&
+                  PGPASSWORD=$POSTGRES_PASSWORD pg_dump -h postgres -U $POSTGRES_USER $POSTGRES_DB
+                  > /backup/postgres-$(date +%Y%m%d-%H%M%S).sql
+              volumeMounts:
+                - name: backup
+                  mountPath: /backup
+          containers:
+            - name: upload
+              image: minio/mc
+              envFrom:
+                - secretRef:
+                    name: minio-credentials
+              command: ["sh", "-c"]
+              args:
+                - >-
+                  mc alias set local http://minio:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD &&
+                  mc mb --ignore-existing local/postgres-backups &&
+                  mc cp /backup/*.sql local/postgres-backups/
+              volumeMounts:
+                - name: backup
+                  mountPath: /backup
+          volumes:
+            - name: backup
+              emptyDir: {}

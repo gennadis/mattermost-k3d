@@ -17,6 +17,9 @@ spec:
         - podSelector:
             matchLabels:
               job-name: minio-create-bucket
+        - podSelector:
+            matchLabels:
+              app: postgres-backup
       ports:
         - protocol: TCP
           port: 9000
